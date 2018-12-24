@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
+
+    </style>
+
+    <style name="GreecyGreen" parent="AppTheme">
+
+        <item name="colorPrimaryDark">@color/greecyGreenDark</item>
+        <item name="alphabatColor">@android:color/black</item>
+        <item name="valueColor">#207e82</item>
+        <item name="alphabatBackgroundColor">@color/greecyGreenAscend</item>
+        <item name="numberColor">@android:color/white</item>
+        <item name="editTextBackgroundColor">@color/greecyGreenAscend</item>
+        <item name="favIconColor">@color/greecyGreenDark</item>
+        <item name="editTextUnderlineColor">@color/greecyGreenDark</item>
+        <item name="listBackgroundtColor">@color/greecyGreenDark</item>
+        <item name="listNamesColor">@color/greecyGreenAscend</item>
+        <item name="numberBackgroundColor">@color/greecyGreenLight</item>
+        <item name="hintTextColor">@color/hintTextColor</item>
+        <item name="menuColor">@android:color/white</item>
+
+        <item name="editorBackground">@color/greecyGreenAscend</item>
+        <item name="editorNumber">@android:color/black</item>
+        <item name="editorValueBox">@color/greecyGreenDark</item>
+        <item name="editorSymbols">@color/greecyGreenDark</item>
+        <item name="editorValueNumber">@color/greecyGreenDark</item>
+        <item name="editorSave">@android:color/white</item>
+        <item name="editorSaveBackground">@color/greecyGreenDark</item>
+
+        <item name="android:textColor">@color/greecyGreenDark</item>
+        <item name="popupMenuStyle">@style/PopupMenuGreecyGreen</item>
+
+    </style>
+
+    <style name="GreecyGreen.Transparent" parent="GreecyGreen">
+
+        <item name="android:windowBackground">@color/windowTransparentBackfround</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+
+    <style name="PopupMenuGreecyGreen" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/greecyGreenAscend</item>
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+
+    </style>
+
+
+</resources>

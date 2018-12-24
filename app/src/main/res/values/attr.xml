@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomAttributes">
+        <!--For the main activity-->
+        <attr name="alphabatColor" format="color" />
+        <attr name="valueColor" format="color" />
+        <attr name="alphabatBackgroundColor" format="color" />
+        <attr name="numberColor" format="color" />
+        <attr name="editTextBackgroundColor" format="color" />
+        <attr name="favIconColor" format="color" />
+        <attr name="editTextUnderlineColor" format="color" />
+        <attr name="listBackgroundtColor" format="color" />
+        <attr name="listNamesColor" format="color" />
+        <attr name="numberBackgroundColor" format="color" />
+        <attr name="hintTextColor" format="color" />
+        <attr name="menuColor" format="color" />
+
+        <!--For the value editor activity-->
+        <attr name="editorBackground" format="color" />
+        <attr name="editorNumber" format="color" />
+        <attr name="editorValueBox" format="color" />
+        <attr name="editorSymbols" format="color" />
+        <attr name="editorValueNumber" format="color" />
+        <attr name="editorSave" format="color" />
+        <attr name="editorSaveBackground" format="color" />
+
+    </declare-styleable>
+
+
+</resources>

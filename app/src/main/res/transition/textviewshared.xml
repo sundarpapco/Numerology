@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+
+    <transitionSet>
+        <targets>
+            <target android:targetId="@id/editor_alphabet" />
+            <target android:targetId="@id/editor_value"/>
+        </targets>
+
+        <transition class="com.papco.sundar.numerology.TextResize" />
+        <changeBounds />
+    </transitionSet>
+    <changeBounds>
+        <targets>
+            <target android:targetId="@id/container" />
+        </targets>
+    </changeBounds>
+
+
+</transitionSet>
