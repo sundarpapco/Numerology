@@ -21,7 +21,7 @@ public interface FavouriteDao {
     public LiveData<List<Favourite>> getAllFavourites();
 
     @Update
-    public void updateFavourite(Favourite updatedValue);
+    public void updateFavourites(List<Favourite> updatedValues);
 
     @Delete
     public void deleteFavourite(Favourite favourite);

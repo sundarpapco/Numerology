@@ -77,6 +77,24 @@ public class MainActivityVM extends AndroidViewModel {
 
     }
 
+    public void updateFavourites(final List<Favourite> updatedList){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db.getFavouriteDao().updateFavourites(updatedList);
+            }
+        }).start();
+    }
+
+    public void deleteFavourite(final Favourite toDel){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db.getFavouriteDao().deleteFavourite(toDel);
+            }
+        }).start();
+    }
+
     public  void clearFavourites(){
 
         new Thread(new Runnable() {

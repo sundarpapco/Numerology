@@ -250,7 +250,6 @@ public class EditorActivity extends AppCompatActivity {
 
             @Override
             public void onTransitionEnd(Transition transition) {
-
                 if(isReturning){
                     new Thread(new Runnable() {
                         @Override
@@ -346,6 +345,11 @@ public class EditorActivity extends AppCompatActivity {
                 mValue.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             else
                 mValue.setTextColor(defaultTextColor);
+        }else {
+            //doing this to notify the mainActivity on ActivityReenter that the value has changed by user
+            Intent data=new Intent();
+            data.putExtra(MainActivity.KEY_CURRENT_VALUE,value.getCurrentValue());
+            setResult(Activity.RESULT_OK,data);
         }
         ObjectAnimator saveAnimator=ObjectAnimator.ofFloat(mSave,"alpha",1f,0f);
         ObjectAnimator removeAnimator=ObjectAnimator.ofFloat(mSubtract,"alpha",1f,0f);

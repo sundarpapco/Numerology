@@ -14,12 +14,14 @@ import android.support.animation.SpringForce;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     AlphabetAdapter alphabetAdapter;
     FavouriteAdapter favouriteAdapter;
+    ItemTouchHelper dragHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
         starClickView=findViewById(R.id.star_icon_click_view);
         
         favouriteAdapter=new FavouriteAdapter(new ArrayList<Favourite>());
+        dragHelper=new ItemTouchHelper(new ItemTouchHelperCallBack(favouriteAdapter));
         recycler_favo.setLayoutManager(new LinearLayoutManager(this));
+        dragHelper.attachToRecyclerView(recycler_favo);
         recycler_favo.addItemDecoration(new SpacingDecoration(this,24,24));
         recycler_favo.setAdapter(favouriteAdapter);
 
@@ -137,6 +142,12 @@ public class MainActivity extends AppCompatActivity {
             addDefaultValuesToDatabase();
 
 
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        alphabetAdapter.updateLastClickedValue(data.getIntExtra(KEY_CURRENT_VALUE,-1));
+        super.onActivityReenter(resultCode, data);
     }
 
     private void registerObservers() {
@@ -390,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
 
         @ColorInt int defaultValueColor;
         private List<AlphabatValue> data;
+        private int lastClickedPosition=-1;
 
         public AlphabetAdapter(List<AlphabatValue> data){
             this.data=data;
@@ -419,13 +431,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setData(List<AlphabatValue> newData){
+
             this.data=newData;
             notifyDataSetChanged();
+        }
+
+        public void updateLastClickedValue(int value){
+            AlphabatValue alphabatValue=data.get(lastClickedPosition);
+            alphabatValue.setCurrentValue(value);
+            ValueHolder holder=(ValueHolder)recycler_alphabet.findViewHolderForAdapterPosition(lastClickedPosition);
+            if(holder!=null) {
+                holder.value.setText(Integer.toString(value));
+                if(alphabatValue.getCurrentValue()==alphabatValue.getDefaultValue())
+                    holder.value.setTextColor(defaultValueColor);
+                else
+                    holder.value.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            }
+
         }
 
         public List<AlphabatValue> getData() {
             return data;
         }
+
+
 
         class ValueHolder extends RecyclerView.ViewHolder{
 
@@ -441,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        lastClickedPosition=getAdapterPosition();
                         startEditorActivity(itemView,data.get(getAdapterPosition()));
                     }
                 });
@@ -457,12 +486,18 @@ public class MainActivity extends AppCompatActivity {
                 else
                     value.setTextColor(defaultValueColor);
 
+                /*if(invisibleUpdate){
+                    invisibleUpdate=false;
+                    alphabet.setVisibility(View.INVISIBLE);
+                    value.setVisibility(View.INVISIBLE);
+                }*/
+
 
             }
         }
     }
 
-    class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.FavViewHolder>{
+    class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.FavViewHolder> implements ItemTouchHelperCallBack.DragCallBack{
 
         private List<Favourite> data;
         private List<AlphabatValue> valueList;
@@ -504,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setData(List<Favourite> data) {
-            this.data = data;
+            this.data=data;
             notifyDataSetChanged();
         }
 
@@ -530,6 +565,44 @@ public class MainActivity extends AppCompatActivity {
             return data;
         }
 
+        @Override
+        public void onDragging(int fromPosition, int toPosition) {
+            Favourite fav=data.get(toPosition);
+            data.set(toPosition,data.get(fromPosition));
+            data.set(fromPosition,fav);
+            notifyItemMoved(fromPosition,toPosition);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            int draggedPriority;
+            List<Favourite> listToUpdate=new ArrayList<>();
+            if(fromPosition<toPosition){
+                draggedPriority=data.get(toPosition).getPriority();
+                for(int i=toPosition;i>fromPosition;--i){
+                    data.get(i).setPriority(data.get(i-1).getPriority());
+                    listToUpdate.add(data.get(i));
+                }
+                data.get(fromPosition).setPriority(draggedPriority);
+                listToUpdate.add(data.get(fromPosition));
+            }else{
+                draggedPriority=data.get(toPosition).getPriority();
+                for(int i=toPosition;i<fromPosition;++i){
+                    data.get(i).setPriority(data.get(i+1).getPriority());
+                    listToUpdate.add(data.get(i));
+                }
+                data.get(fromPosition).setPriority(draggedPriority);
+                listToUpdate.add(data.get(fromPosition));
+            }
+            viewModel.updateFavourites(listToUpdate);
+
+        }
+
+        @Override
+        public void onSwiped(int position) {
+            viewModel.deleteFavourite(data.get(position));
+        }
+
         class FavViewHolder extends RecyclerView.ViewHolder{
 
             TextView favName,favValue;
@@ -548,13 +621,24 @@ public class MainActivity extends AppCompatActivity {
                         inputName.requestFocus();
                     }
                 });
+                dragHandle.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        if(event.getAction()==MotionEvent.ACTION_DOWN)
+                            dragHelper.startDrag(FavViewHolder.this);
+
+                        return false;
+                    }
+                });
             }
 
             public void bind(){
                 favName.setText(data.get(getAdapterPosition()).getName());
-                numerologyValue.calculate(data.get(getAdapterPosition()).getName(),valueList);
+                /*numerologyValue.calculate(data.get(getAdapterPosition()).getName(),valueList);
                 String val=numerologyValue.getPrimaryString()+"("+numerologyValue.getSecondaryString()+")";
-                favValue.setText(val);
+                favValue.setText(val);*/
+                favValue.setText(Integer.toString(data.get(getAdapterPosition()).getPriority()));
             }
         }
     }
