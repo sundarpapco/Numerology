@@ -24,11 +24,9 @@
         <item name="listNamesColor">@color/greecyGreenAscend</item>
         <item name="numberBackgroundColor">@color/greecyGreenLight</item>
         <item name="hintTextColor">@color/hintTextColor</item>
-        <item name="menuColor">@android:color/white</item>
 
         <item name="editorBackground">@color/greecyGreenAscend</item>
         <item name="editorNumber">@android:color/black</item>
-        <item name="editorValueBox">@color/greecyGreenDark</item>
         <item name="editorSymbols">@color/greecyGreenDark</item>
         <item name="editorValueNumber">@color/greecyGreenDark</item>
         <item name="editorSave">@android:color/white</item>
@@ -38,7 +36,6 @@
         <item name="popupMenuStyle">@style/PopupMenuGreecyGreen</item>
 
     </style>
-
     <style name="GreecyGreen.Transparent" parent="GreecyGreen">
 
         <item name="android:windowBackground">@color/windowTransparentBackfround</item>
@@ -47,13 +44,132 @@
         <item name="windowNoTitle">true</item>
 
     </style>
-
-
     <style name="PopupMenuGreecyGreen" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@color/greecyGreenAscend</item>
         <item name="android:dropDownHorizontalOffset">-16dp</item>
 
     </style>
+
+    <style name="ShadesOfSun" parent="AppTheme">
+
+        <item name="colorPrimaryDark">@color/shadesOfSunYellow</item>
+        <item name="alphabatColor">@android:color/black</item>
+        <item name="valueColor">@color/shadesOfSunBrown</item>
+        <item name="alphabatBackgroundColor">@color/shadesOfSunAscend</item>
+        <item name="numberColor">@android:color/white</item>
+        <item name="editTextBackgroundColor">@color/shadesOfSunAscend</item>
+        <item name="favIconColor">@color/shadesOfSunBrown</item>
+        <item name="editTextUnderlineColor">@color/shadesOfSunBrown</item>
+        <item name="listBackgroundtColor">@color/shadesOfSunYellow</item>
+        <item name="listNamesColor">@android:color/black</item>
+        <item name="numberBackgroundColor">@color/shadesOfSunRed</item>
+        <item name="hintTextColor">@color/hintTextColor</item>
+
+        <item name="editorBackground">@color/shadesOfSunAscend</item>
+        <item name="editorNumber">@android:color/black</item>
+        <item name="editorSymbols">@color/shadesOfSunBrown</item>
+        <item name="editorValueNumber">@color/shadesOfSunBrown</item>
+        <item name="editorSave">@android:color/white</item>
+        <item name="editorSaveBackground">@color/shadesOfSunBrown</item>
+
+        <item name="android:textColor">@color/shadesOfSunRed</item>
+        <item name="popupMenuStyle">@style/PopupMenuShadesOfSun</item>
+
+    </style>
+    <style name="ShadesOfSun.Transparent" parent="ShadesOfSun">
+
+        <item name="android:windowBackground">@color/windowTransparentBackfround</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+    <style name="PopupMenuShadesOfSun" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/shadesOfSunAscend</item>
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+
+    </style>
+
+    <style name="SandySea" parent="AppTheme">
+
+        <item name="colorPrimaryDark">@color/sandySeaBlue</item>
+        <item name="alphabatColor">@android:color/black</item>
+        <item name="valueColor">@color/sandySeaDarkBlue</item>
+        <item name="alphabatBackgroundColor">@color/sandySeaAscend</item>
+        <item name="numberColor">@color/sandySeaPink</item>
+        <item name="editTextBackgroundColor">@color/sandySeaAscend</item>
+        <item name="favIconColor">@color/sandySeaPink</item>
+        <item name="editTextUnderlineColor">@color/sandySeaBlue</item>
+        <item name="listBackgroundtColor">@color/sandySeaBlue</item>
+        <item name="listNamesColor">@android:color/black</item>
+        <item name="numberBackgroundColor">@color/sandySeaLightPink</item>
+        <item name="hintTextColor">@color/hintTextColor</item>
+
+        <item name="editorBackground">@color/sandySeaAscend</item>
+        <item name="editorNumber">@android:color/black</item>
+        <item name="editorSymbols">@color/sandySeaDarkBlue</item>
+        <item name="editorValueNumber">@color/sandySeaDarkBlue</item>
+        <item name="editorSave">@android:color/white</item>
+        <item name="editorSaveBackground">@color/sandySeaDarkBlue</item>
+
+        <item name="android:textColor">@color/sandySeaDarkBlue</item>
+        <item name="popupMenuStyle">@style/PopupMenuSandySea</item>
+
+    </style>
+    <style name="SandySea.Transparent" parent="SandySea">
+
+        <item name="android:windowBackground">@color/windowTransparentBackfround</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+    <style name="PopupMenuSandySea" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/sandySeaAscend</item>
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+
+    </style>
+
+    <style name="RadiumNight" parent="AppTheme">
+
+        <item name="colorPrimaryDark">@android:color/black </item>
+        <item name="alphabatColor">@color/radiumNightRadium</item>
+        <item name="valueColor">@color/radiumNightRadium</item>
+        <item name="alphabatBackgroundColor">@android:color/black</item>
+        <item name="numberColor">@color/radiumNightRadium</item>
+        <item name="editTextBackgroundColor">@color/radiumNightLightGrey</item>
+        <item name="favIconColor">@android:color/black</item>
+        <item name="editTextUnderlineColor">@color/radiumNightRadium</item>
+        <item name="listBackgroundtColor">@android:color/black</item>
+        <item name="listNamesColor">@color/radiumNightRadium</item>
+        <item name="numberBackgroundColor">@android:color/black</item>
+        <item name="hintTextColor">@color/hintTextColor</item>
+
+        <item name="editorBackground">@android:color/black</item>
+        <item name="editorNumber">@color/radiumNightRadium</item>
+        <item name="editorSymbols">@color/radiumNightRadium</item>
+        <item name="editorValueNumber">@color/radiumNightRadium</item>
+        <item name="editorSave">@android:color/black</item>
+        <item name="editorSaveBackground">@color/radiumNightRadium</item>
+
+        <item name="android:textColor">@android:color/black</item>
+        <item name="popupMenuStyle">@style/PopupMenuRadiumNight</item>
+
+    </style>
+    <style name="RadiumNight.Transparent" parent="RadiumNight">
+
+        <item name="android:windowBackground">@color/windowTransparentBackfround</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+    <style name="PopupMenuRadiumNight" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/radiumNightRadium</item>
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+
+    </style>
+
 
 
 </resources>

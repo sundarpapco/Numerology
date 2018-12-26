@@ -1,10 +1,15 @@
 package com.papco.sundar.numerology;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +19,7 @@ import android.support.animation.SpringForce;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.transition.TransitionSet;
@@ -31,10 +38,13 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,11 +68,18 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_DEFAULT_VALUE="key:default_value";
     public static final String KEY_CURRENT_VALUE="key:editor_value";
 
+    public static  final int DEFAULT_THEME=1;
+    public static final int THEME_GREECY_GREEN=1;
+    public static final int THEME_SHADES_OF_SUN=2;
+    public static final int THEME_SANDY_SEA=3;
+    public static final int THEME_RADIUM_NIGHT=4;
+    public static final String KEY_THEME="selectedTheme";
+
     MainActivityVM viewModel;
 
     RecyclerView recycler_alphabet,recycler_favo;
     EditText inputName;
-    ImageView menuButton;
+    ImageView menuButton,warningSymbol;
     TextView bigNumber,smallNumber;
     View starClickView;
 
@@ -72,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        loadTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -83,12 +101,13 @@ public class MainActivity extends AppCompatActivity {
         bigNumber=findViewById(R.id.number);
         smallNumber=findViewById(R.id.second_number);
         starClickView=findViewById(R.id.star_icon_click_view);
+        warningSymbol=findViewById(R.id.warning_custom_value);
         
         favouriteAdapter=new FavouriteAdapter(new ArrayList<Favourite>());
         dragHelper=new ItemTouchHelper(new ItemTouchHelperCallBack(favouriteAdapter));
         recycler_favo.setLayoutManager(new LinearLayoutManager(this));
         dragHelper.attachToRecyclerView(recycler_favo);
-        recycler_favo.addItemDecoration(new SpacingDecoration(this,24,24));
+        recycler_favo.addItemDecoration(new SpacingDecoration(this,28,24));
         recycler_favo.setAdapter(favouriteAdapter);
 
 
@@ -128,6 +147,15 @@ public class MainActivity extends AppCompatActivity {
                 
             }
         });
+        inputName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                addToFavourite();
+                inputName.setImeOptions(EditorInfo.IME_ACTION_GO);
+                inputName.requestFocus();
+                return false;
+            }
+        });
         starClickView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,10 +165,41 @@ public class MainActivity extends AppCompatActivity {
         });
 
         registerObservers();
+        warningSymbol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"You are using custom values. Reset for default values",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         if(isFirstRun())
             addDefaultValuesToDatabase();
 
+
+    }
+
+    private void loadTheme() {
+
+        int currentTheme=getThemeId();
+        switch (currentTheme){
+
+            case THEME_GREECY_GREEN:
+                setTheme(R.style.GreecyGreen);
+                return;
+
+            case THEME_SHADES_OF_SUN:
+                setTheme(R.style.ShadesOfSun);
+                return;
+
+            case THEME_SANDY_SEA:
+                setTheme(R.style.SandySea);
+                return;
+
+            case THEME_RADIUM_NIGHT:
+                setTheme(R.style.RadiumNight);
+                break;
+
+        }
 
     }
 
@@ -159,6 +218,15 @@ public class MainActivity extends AppCompatActivity {
                 if(alphabatValues==null) {
                     return;
                 }
+
+                boolean usingCustomValues=false;
+                for(AlphabatValue val:alphabatValues){
+                    if(val.getDefaultValue()!=val.getCurrentValue()){
+                        usingCustomValues=true;
+                        continue;
+                    }
+                }
+                usingCustomValues(usingCustomValues);
 
                 if(alphabetAdapter==null){
                     alphabetAdapter=new AlphabetAdapter(alphabatValues);
@@ -200,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         popup.getMenuInflater().inflate(R.menu.main_menu,popup.getMenu());
         //if there is no items in the favourite list, then dissble the share option
         if(favouriteAdapter.getData().size()==0){
-            popup.getMenu().getItem(1).setEnabled(false);
+            popup.getMenu().getItem(0).setEnabled(false);
         }
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -222,6 +290,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_share_without_values:
                         shareFavouriteList(false);
                         return true;
+
+                    case R.id.menu_themes:
+                        showThemeSelectionDialog();
+                        return true;
                 }
 
 
@@ -242,6 +314,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+    }
+
+    private int getThemeId(){
+
+        SharedPreferences pref=getSharedPreferences("mysettings",MODE_PRIVATE);
+        if(pref.contains(KEY_THEME)){
+            return pref.getInt(KEY_THEME,DEFAULT_THEME);
+        }else
+            return DEFAULT_THEME;
     }
 
     private void addToFavourite(){
@@ -268,6 +349,14 @@ public class MainActivity extends AppCompatActivity {
         Favourite fav=new Favourite(inputName.getText().toString().trim(),priority);
         viewModel.addFavourite(fav);
         inputName.setText("");
+
+    }
+
+    private void showThemeSelectionDialog(){
+
+        FragmentManager fm=getSupportFragmentManager();
+        ThemeSelectionDialog dialog=new ThemeSelectionDialog();
+        dialog.show(fm,"theme_selection_dialog");
 
     }
 
@@ -326,6 +415,40 @@ public class MainActivity extends AppCompatActivity {
     private void addDefaultValuesToDatabase(){
 
         viewModel.addDefaultAlphabets();
+    }
+
+    private void usingCustomValues(boolean isUsingCustomValues){
+
+        if(isUsingCustomValues)
+            showWarningSymbol(true);
+        else
+            showWarningSymbol(false);
+    }
+
+    private void showWarningSymbol(boolean show){
+
+        Log.d(TAG, "showWarningSymbol: "+Boolean.toString(show));
+        if(show){
+            if(warningSymbol.getVisibility()==View.VISIBLE)
+                return;
+
+            ObjectAnimator animator=ObjectAnimator.ofFloat(warningSymbol,"alpha",0f,1f);
+            warningSymbol.setVisibility(View.VISIBLE);
+            animator.start();
+        }else{
+            if(warningSymbol.getVisibility()==View.INVISIBLE)
+                return;
+
+            ObjectAnimator animator=ObjectAnimator.ofFloat(warningSymbol,"alpha",1f,0f);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    warningSymbol.setVisibility(View.INVISIBLE);
+                }
+            });
+            animator.start();
+        }
+
     }
 
     private void bouceAnimate(){
@@ -431,7 +554,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setData(List<AlphabatValue> newData){
-
             this.data=newData;
             notifyDataSetChanged();
         }
@@ -635,10 +757,9 @@ public class MainActivity extends AppCompatActivity {
 
             public void bind(){
                 favName.setText(data.get(getAdapterPosition()).getName());
-                /*numerologyValue.calculate(data.get(getAdapterPosition()).getName(),valueList);
+                numerologyValue.calculate(data.get(getAdapterPosition()).getName(),valueList);
                 String val=numerologyValue.getPrimaryString()+"("+numerologyValue.getSecondaryString()+")";
-                favValue.setText(val);*/
-                favValue.setText(Integer.toString(data.get(getAdapterPosition()).getPriority()));
+                favValue.setText(val);
             }
         }
     }

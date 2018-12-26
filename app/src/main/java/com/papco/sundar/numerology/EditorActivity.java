@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.SharedElementCallback;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -28,6 +29,13 @@ import com.papco.sundar.numerology.database.entity.AlphabatValue;
 
 import java.util.List;
 
+import static com.papco.sundar.numerology.MainActivity.DEFAULT_THEME;
+import static com.papco.sundar.numerology.MainActivity.KEY_THEME;
+import static com.papco.sundar.numerology.MainActivity.THEME_GREECY_GREEN;
+import static com.papco.sundar.numerology.MainActivity.THEME_RADIUM_NIGHT;
+import static com.papco.sundar.numerology.MainActivity.THEME_SANDY_SEA;
+import static com.papco.sundar.numerology.MainActivity.THEME_SHADES_OF_SUN;
+
 public class EditorActivity extends AppCompatActivity {
 
     public static final String TAG="SUNDAR";
@@ -45,6 +53,7 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        loadTheme();
         super.onCreate(savedInstanceState);
 
         initializeTransitions();
@@ -331,7 +340,41 @@ public class EditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         hideViews();
     }
-    
+
+    private void loadTheme() {
+
+        int currentTheme=getThemeId();
+        switch (currentTheme){
+
+            case THEME_GREECY_GREEN:
+                setTheme(R.style.GreecyGreen_Transparent);
+                return;
+
+            case THEME_SHADES_OF_SUN:
+                setTheme(R.style.ShadesOfSun_Transparent);
+                return;
+
+            case THEME_SANDY_SEA:
+                setTheme(R.style.SandySea_Transparent);
+                return;
+
+            case THEME_RADIUM_NIGHT:
+                setTheme(R.style.RadiumNight_Transparent);
+                break;
+
+        }
+
+    }
+
+    private int getThemeId(){
+
+        SharedPreferences pref=getSharedPreferences("mysettings",MODE_PRIVATE);
+        if(pref.contains(KEY_THEME)){
+            return pref.getInt(KEY_THEME,DEFAULT_THEME);
+        }else
+            return DEFAULT_THEME;
+    }
+
 
     private void hideViews(){
 

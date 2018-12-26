@@ -10,4 +10,18 @@
     <color name="greecyGreenDark">#207e82</color>
     <color name="greecyGreenAscend">#FEFED3</color>
 
+    <color name="shadesOfSunRed">#F34949</color>
+    <color name="shadesOfSunYellow">#f2c233</color>
+    <color name="shadesOfSunBrown">#c7a439</color>
+    <color name="shadesOfSunAscend">#FCF7CF</color>
+    
+    <color name="sandySeaBlue">#73DBC4</color>
+    <color name="sandySeaAscend">#FFFBCA</color>
+    <color name="sandySeaPink">#FF008B</color>
+    <color name="sandySeaLightPink">#F7F3DE</color>
+    <color name="sandySeaDarkBlue">#429885</color>
+    
+    <color name="radiumNightRadium">#15FFF7</color>
+    <color name="radiumNightLightGrey">#F7F7F7</color>
+
 </resources>

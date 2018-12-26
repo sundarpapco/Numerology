@@ -1,6 +1,7 @@
 package com.papco.sundar.numerology;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -42,8 +43,20 @@ public class ItemTouchHelperCallBack extends ItemTouchHelper.Callback {
     }
 
     @Override
+    public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+        super.onSelectedChanged(viewHolder, actionState);
+
+        //if(actionState==ItemTouchHelper.ACTION_STATE_DRAG){
+        if(viewHolder!=null)
+            viewHolder.itemView.setActivated(true);
+        //}
+    }
+
+    @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
+
+        viewHolder.itemView.setActivated(false);
 
         if(dragFrom!=-1 && dragTo!=-1&& dragFrom!=dragTo)
             if(callBack!=null)

@@ -14,7 +14,6 @@
         <attr name="listNamesColor" format="color" />
         <attr name="numberBackgroundColor" format="color" />
         <attr name="hintTextColor" format="color" />
-        <attr name="menuColor" format="color" />
 
         <!--For the value editor activity-->
         <attr name="editorBackground" format="color" />

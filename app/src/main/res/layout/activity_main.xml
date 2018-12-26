@@ -53,6 +53,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/number" />
 
+    <ImageView
+        android:id="@+id/warning_custom_value"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_warning"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ic_more" />
+
     <EditText
         android:id="@+id/input_name"
         android:layout_width="match_parent"
@@ -83,8 +94,6 @@
         android:id="@+id/recycler_fav"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:background="?listBackgroundtColor"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +102,7 @@
     <View
         android:id="@+id/gradientView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@drawable/gradient"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
