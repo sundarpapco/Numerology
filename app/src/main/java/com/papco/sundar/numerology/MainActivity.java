@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<AlphabatValue> alphabatValues) {
 
-                if(alphabatValues==null) {
+                if(alphabatValues==null || alphabatValues.size()==0) {
                     return;
                 }
 
@@ -254,7 +254,8 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getFavourites().observe(this, new Observer<List<Favourite>>() {
             @Override
             public void onChanged(@Nullable List<Favourite> favourites) {
-                if(favourites==null)
+
+                if(favourites==null || favourites.size()==0)
                     return;
 
                 favouriteAdapter.setData(favourites);

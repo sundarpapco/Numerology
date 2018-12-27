@@ -1,12 +1,14 @@
 package com.papco.sundar.numerology.database.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity
+@Entity( tableName = "favourites")
 public class Favourite {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
     private int id;
     private String name;
     private int priority;

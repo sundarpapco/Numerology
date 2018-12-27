@@ -1,16 +1,19 @@
 package com.papco.sundar.numerology.database.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.security.AlgorithmParameterGenerator;
 
-@Entity
+@Entity( tableName = "alphavalues")
 public class AlphabatValue {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
     private int id;
+    @ColumnInfo(name = "val")
     private int currentValue;
     private int defaultValue;
 

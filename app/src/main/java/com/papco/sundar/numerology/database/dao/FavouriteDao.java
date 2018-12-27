@@ -17,7 +17,7 @@ public interface FavouriteDao {
     @Insert
     public long addFavourite(Favourite newvalue);
 
-    @Query("select * from favourite order by priority")
+    @Query("select * from favourites order by priority")
     public LiveData<List<Favourite>> getAllFavourites();
 
     @Update
@@ -26,6 +26,6 @@ public interface FavouriteDao {
     @Delete
     public void deleteFavourite(Favourite favourite);
 
-    @Query("delete  from favourite")
+    @Query("delete  from favourites")
     public void deleteAllFavourites();
 }

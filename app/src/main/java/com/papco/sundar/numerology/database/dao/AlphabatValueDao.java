@@ -16,13 +16,17 @@ public interface AlphabatValueDao {
     @Insert
     public  List<Long> addAllAlphabats(List<AlphabatValue> values);
 
-    @Query("select * from AlphabatValue")
+    @Query("select * from alphavalues")
     public LiveData<List<AlphabatValue>> getAlphabatValues();
+
+    @Query("select * from alphavalues")
+    public List<AlphabatValue> getAlphabatsNonLive();
 
     @Update
     public void updateAlphabatValue(AlphabatValue updatedValue);
 
     @Update
     public void resetAlphabatValues(List<AlphabatValue> updatedList);
+
 
 }

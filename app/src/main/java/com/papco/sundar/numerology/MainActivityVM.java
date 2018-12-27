@@ -38,13 +38,17 @@ public class MainActivityVM extends AndroidViewModel {
 
     public void addDefaultAlphabets(){
 
-        Log.d(TAG, "addDefaultAlphabets: ");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Long> count;
-                count=db.getAlphabatValueDao().addAllAlphabats(getDefaultValues());
-                Log.d(TAG, "ADDED THE DEFAULT DATA: "+Integer.toString(count.size())+" Rows added");
+
+                //if the number of rows is != 0 in the firstRun, then the user is probably upgrading
+                //from version 1 to 2 hence has data already. so, lets just skip adding the rows. thats all
+                List<AlphabatValue> forCounting=db.getAlphabatValueDao().getAlphabatsNonLive();
+                if(forCounting.size()==0) {
+                    db.getAlphabatValueDao().addAllAlphabats(getDefaultValues());
+                    return;
+                }
             }
         }).start();
 
