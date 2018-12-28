@@ -1,7 +1,5 @@
 package com.papco.sundar.numerology;
 
-import android.util.Log;
-
 import com.papco.sundar.numerology.database.entity.AlphabatValue;
 
 import java.util.List;

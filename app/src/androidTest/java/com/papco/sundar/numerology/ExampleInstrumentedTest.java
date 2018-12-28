@@ -3,14 +3,11 @@ package com.papco.sundar.numerology;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory;
 import android.arch.persistence.room.migration.Migration;
-import android.content.Context;
-import android.database.Cursor;
+import android.arch.persistence.room.testing.MigrationTestHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.arch.persistence.room.testing.MigrationTestHelper;
-import android.util.Log;
 
 import com.papco.sundar.numerology.database.MasterDatabase;
 
@@ -19,8 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -66,12 +61,12 @@ public class ExampleInstrumentedTest {
                 new FrameworkSQLiteOpenHelperFactory());
         // Use TestDbOpenHelper
         // to create the database with the initial version 1
-        NumerologyDataHandler sqliteDbHelper = new NumerologyDataHandler(
+        /*NumerologyDataHandler sqliteDbHelper = new NumerologyDataHandler(
                 InstrumentationRegistry.getTargetContext());
 
-        SQLiteDatabase db = sqliteDbHelper.getWritableDatabase();
+        SQLiteDatabase db = sqliteDbHelper.getWritableDatabase();*/
         //db.execSQL(CREATE_TABLE");
-        db.close();
+        //db.close();
         // Re-open the database with version 2 (which Room generated)
         // and provide MIGRATION_1_2 as the migration process.
         migrationHelper.runMigrationsAndValidate(

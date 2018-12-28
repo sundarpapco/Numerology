@@ -13,6 +13,7 @@
     <style name="GreecyGreen" parent="AppTheme">
 
         <item name="colorPrimaryDark">@color/greecyGreenDark</item>
+        <item name="colorAccent">@color/greecyGreenDark</item>
         <item name="alphabatColor">@android:color/black</item>
         <item name="valueColor">#207e82</item>
         <item name="alphabatBackgroundColor">@color/greecyGreenAscend</item>
@@ -53,6 +54,7 @@
     <style name="ShadesOfSun" parent="AppTheme">
 
         <item name="colorPrimaryDark">@color/shadesOfSunYellow</item>
+        <item name="colorAccent">@color/shadesOfSunRed</item>
         <item name="alphabatColor">@android:color/black</item>
         <item name="valueColor">@color/shadesOfSunBrown</item>
         <item name="alphabatBackgroundColor">@color/shadesOfSunAscend</item>
@@ -93,6 +95,7 @@
     <style name="SandySea" parent="AppTheme">
 
         <item name="colorPrimaryDark">@color/sandySeaBlue</item>
+        <item name="colorAccent">@color/sandySeaPink</item>
         <item name="alphabatColor">@android:color/black</item>
         <item name="valueColor">@color/sandySeaDarkBlue</item>
         <item name="alphabatBackgroundColor">@color/sandySeaAscend</item>
@@ -133,6 +136,7 @@
     <style name="RadiumNight" parent="AppTheme">
 
         <item name="colorPrimaryDark">@android:color/black </item>
+        <item name="colorAccent">@android:color/black</item>
         <item name="alphabatColor">@color/radiumNightRadium</item>
         <item name="valueColor">@color/radiumNightRadium</item>
         <item name="alphabatBackgroundColor">@android:color/black</item>

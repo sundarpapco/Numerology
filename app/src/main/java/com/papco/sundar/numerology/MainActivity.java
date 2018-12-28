@@ -3,16 +3,14 @@ package com.papco.sundar.numerology;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.SharedElementCallback;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
@@ -20,20 +18,15 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.transition.ChangeBounds;
-import android.transition.TransitionSet;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -44,13 +37,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.papco.sundar.numerology.database.MasterDatabase;
 import com.papco.sundar.numerology.database.entity.AlphabatValue;
 import com.papco.sundar.numerology.database.entity.Favourite;
 
@@ -58,8 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private final String TAG="SUNDAR";
 
     public static final String SHARED_ALPHABET_TEXT_SIZE="shared_text_size";
     public static final String SHARED_VALUE_TEXT_SIZE="shared_value_text_size";
@@ -79,19 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recycler_alphabet,recycler_favo;
     EditText inputName;
-    ImageView menuButton,warningSymbol;
+    ImageView menuButton,warningSymbol,upperShadow;
     TextView bigNumber,smallNumber;
     View starClickView;
 
     AlphabetAdapter alphabetAdapter;
     FavouriteAdapter favouriteAdapter;
     ItemTouchHelper dragHelper;
+    @ColorInt int shadowBlendColour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         loadTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TypedValue typedValue=new TypedValue();
+        getTheme().resolveAttribute(R.attr.numberBackgroundColor,typedValue,true);
+        shadowBlendColour=typedValue.data;
 
         viewModel=ViewModelProviders.of(this).get(MainActivityVM.class);
         recycler_alphabet=findViewById(R.id.recycler_alphabets);
@@ -102,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         smallNumber=findViewById(R.id.second_number);
         starClickView=findViewById(R.id.star_icon_click_view);
         warningSymbol=findViewById(R.id.warning_custom_value);
+        upperShadow=findViewById(R.id.upper_shadow);
         
         favouriteAdapter=new FavouriteAdapter(new ArrayList<Favourite>());
         dragHelper=new ItemTouchHelper(new ItemTouchHelperCallBack(favouriteAdapter));
@@ -110,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         recycler_favo.addItemDecoration(new SpacingDecoration(this,28,24));
         recycler_favo.setAdapter(favouriteAdapter);
 
-
+        upperShadow.setColorFilter(shadowBlendColour,PorterDuff.Mode.MULTIPLY);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"You are using custom values. Reset for default values",Toast.LENGTH_SHORT).show();
             }
         });
+
 
         if(isFirstRun())
             addDefaultValuesToDatabase();
@@ -428,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWarningSymbol(boolean show){
 
-        Log.d(TAG, "showWarningSymbol: "+Boolean.toString(show));
         if(show){
             if(warningSymbol.getVisibility()==View.VISIBLE)
                 return;
@@ -608,12 +603,6 @@ public class MainActivity extends AppCompatActivity {
                     value.setTextColor(MainActivity.this.getResources().getColor(android.R.color.holo_red_dark));
                 else
                     value.setTextColor(defaultValueColor);
-
-                /*if(invisibleUpdate){
-                    invisibleUpdate=false;
-                    alphabet.setVisibility(View.INVISIBLE);
-                    value.setVisibility(View.INVISIBLE);
-                }*/
 
 
             }

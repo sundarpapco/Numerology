@@ -5,7 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="hintTextColor">#707070</color>
     <color name="windowTransparentBackfround">#a4000000</color>
-    
+    <color name="upperShadowStartColor">#64707070</color>
+
     <color name="greecyGreenLight">#298F9B</color>
     <color name="greecyGreenDark">#207e82</color>
     <color name="greecyGreenAscend">#FEFED3</color>

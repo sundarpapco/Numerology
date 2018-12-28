@@ -87,41 +87,6 @@ public class ThemeSelectionDialog extends DialogFragment {
     private void selectTheme(int themeId){
 
         SharedPreferences pref=getActivity().getSharedPreferences("mysettings",Context.MODE_PRIVATE);
-        switch (themeId){
-            case MainActivity.THEME_GREECY_GREEN:
-                greecyGreen.setActivated(true);
-                greecyGreen.setElevation(15);
-                shadesOfSun.setActivated(false);
-                sandySea.setActivated(false);
-                radiumNight.setActivated(false);
-                break;
-
-            case MainActivity.THEME_SHADES_OF_SUN:
-                greecyGreen.setActivated(false);
-                shadesOfSun.setActivated(true);
-                shadesOfSun.setElevation(15);
-                sandySea.setActivated(false);
-                radiumNight.setActivated(false);
-                break;
-
-            case MainActivity.THEME_SANDY_SEA:
-                greecyGreen.setActivated(false);
-                shadesOfSun.setActivated(false);
-                sandySea.setActivated(true);
-                sandySea.setElevation(15);
-                radiumNight.setActivated(false);
-                break;
-
-            case MainActivity.THEME_RADIUM_NIGHT:
-                greecyGreen.setActivated(false);
-                shadesOfSun.setActivated(false);
-                sandySea.setActivated(false);
-                radiumNight.setActivated(true);
-                radiumNight.setElevation(15);
-                break;
-
-        }
-
         pref.edit().putInt(MainActivity.KEY_THEME,themeId).commit();
         dismiss();
         getActivity().recreate();

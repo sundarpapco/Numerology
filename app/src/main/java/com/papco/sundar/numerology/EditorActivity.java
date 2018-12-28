@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,6 @@ import static com.papco.sundar.numerology.MainActivity.THEME_SHADES_OF_SUN;
 
 public class EditorActivity extends AppCompatActivity {
 
-    public static final String TAG="SUNDAR";
-
     ViewGroup container,topParent;
     Rect alphabetTextBounds,valueTextBounds;
     TextView alphabet,mValue,mSave;
@@ -49,6 +46,7 @@ public class EditorActivity extends AppCompatActivity {
     AlphabatValue value;
     @ColorInt int defaultTextColor;
     MasterDatabase db;
+    boolean userChangedValue =false;
     boolean isReturning=false;
 
     @Override
@@ -144,7 +142,7 @@ public class EditorActivity extends AppCompatActivity {
         if(db==null)
             db=MasterDatabase.getInstance(this);
         value.setCurrentValue(currentValue);
-        isReturning=true; // setting this flag will save change to db at transition end hook
+        userChangedValue =true; // setting this flag will save change to db at transition end hook
         hideViews();
     }
 
@@ -259,15 +257,21 @@ public class EditorActivity extends AppCompatActivity {
 
             @Override
             public void onTransitionEnd(Transition transition) {
-                if(isReturning){
+                if(userChangedValue){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             db.getAlphabatValueDao().updateAlphabatValue(value);
                         }
                     }).start();
-                }else
+                    return;
+                }
+
+                if(!isReturning) {
                     showViews();
+                    isReturning=true;
+                }
+
             }
 
             @Override
@@ -322,7 +326,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private void showViews(){
 
-
+        if(mSave.getVisibility()==View.VISIBLE)
+            return;
         ObjectAnimator saveAnimator=ObjectAnimator.ofFloat(mSave,"alpha",0f,1f);
         ObjectAnimator removeAnimator=ObjectAnimator.ofFloat(mSubtract,"alpha",0f,1f);
         ObjectAnimator addAnimator=ObjectAnimator.ofFloat(mAdd,"alpha",0f,1f);
@@ -382,7 +387,7 @@ public class EditorActivity extends AppCompatActivity {
         //check for that and restore the number taking the color of the text into account
         // to original state before transition
 
-        if(!isReturning) {
+        if(!userChangedValue) {
             mValue.setText(Integer.toString(value.getCurrentValue()));
             if(value.getCurrentValue()!=value.getDefaultValue())
                 mValue.setTextColor(getResources().getColor(android.R.color.holo_red_dark));

@@ -18,7 +18,6 @@ import android.graphics.drawable.Drawable;
 import android.transition.Transition;
 import android.transition.TransitionValues;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;

@@ -5,11 +5,8 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.papco.sundar.numerology.database.dao.AlphabatValueDao;
 import com.papco.sundar.numerology.database.dao.FavouriteDao;
