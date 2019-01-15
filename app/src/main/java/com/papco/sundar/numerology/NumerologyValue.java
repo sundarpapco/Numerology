@@ -1,5 +1,8 @@
 package com.papco.sundar.numerology;
 
+import android.arch.persistence.room.util.StringUtil;
+import android.text.TextUtils;
+
 import com.papco.sundar.numerology.database.entity.AlphabatValue;
 
 import java.util.List;
@@ -41,13 +44,19 @@ public class NumerologyValue {
         int value=0;
         name=name.toUpperCase();
         char baseChar='A';
+        char currentChar;
         for(int i=0;i<name.length();++i){
+            currentChar=name.charAt(i);
             for(int j=0;j<26;++j){
-                if(name.charAt(i)==(char)(baseChar+j)){
+                if(currentChar==(char)(baseChar+j)){
                     value=value+list.get(j).getCurrentValue();
-                    continue;
+                    break;
                 }
             }
+            if(currentChar>='0' && currentChar<='9'){
+                value=value+Character.digit(currentChar,10);
+            }
+
         }
         return value;
 
@@ -55,7 +64,7 @@ public class NumerologyValue {
 
     public void calculate(String name,List<AlphabatValue> list){
 
-        if(name==null || list==null){
+        if(name==null || list==null || list.size()==0){
             return;
         }
 

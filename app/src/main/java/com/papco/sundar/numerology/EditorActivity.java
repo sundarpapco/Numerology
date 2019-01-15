@@ -9,6 +9,7 @@ import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -98,6 +99,10 @@ public class EditorActivity extends AppCompatActivity {
                 saveNewValue();
             }
         });
+
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP){
+            showViews();
+        }
 
     }
 

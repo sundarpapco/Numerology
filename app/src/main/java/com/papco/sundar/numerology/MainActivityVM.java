@@ -106,7 +106,7 @@ public class MainActivityVM extends AndroidViewModel {
         }).start();
     }
 
-    private List<AlphabatValue> getDefaultValues(){
+    public static List<AlphabatValue> getDefaultValues(){
 
         List<AlphabatValue> list=new ArrayList<>();
         list.add(new AlphabatValue(1)); //A

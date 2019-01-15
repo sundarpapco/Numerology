@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.SpringAnimation;
@@ -26,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
     ItemTouchHelper dragHelper;
     @ColorInt int shadowBlendColour;
 
+    //region Overridden methods -----------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         loadTheme();
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         starClickView=findViewById(R.id.star_icon_click_view);
         warningSymbol=findViewById(R.id.warning_custom_value);
         upperShadow=findViewById(R.id.upper_shadow);
-        
+
         favouriteAdapter=new FavouriteAdapter(new ArrayList<Favourite>());
         dragHelper=new ItemTouchHelper(new ItemTouchHelperCallBack(favouriteAdapter));
         recycler_favo.setLayoutManager(new LinearLayoutManager(this));
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         inputName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
         inputName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -174,6 +178,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        alphabetAdapter.updateLastClickedValue(data.getIntExtra(KEY_CURRENT_VALUE,-1));
+        super.onActivityReenter(resultCode, data);
+    }
+
+    //endregion overridden methods ------------------------------------
+
     private void loadTheme() {
 
         int currentTheme=getThemeId();
@@ -197,12 +209,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
-
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        alphabetAdapter.updateLastClickedValue(data.getIntExtra(KEY_CURRENT_VALUE,-1));
-        super.onActivityReenter(resultCode, data);
     }
 
     private void registerObservers() {
@@ -396,6 +402,11 @@ public class MainActivity extends AppCompatActivity {
         View background=itemView.findViewById(R.id.alphabat_list_item);
 
         Intent intent=new Intent(this,EditorActivity.class);
+
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP){
+            startActivity(intent);
+            return;
+        }
         intent.putExtra(SHARED_ALPHABET_TEXT_SIZE,text.getTextSize());
         intent.putExtra(SHARED_VALUE_TEXT_SIZE,valueText.getTextSize());
         intent.putExtra(KEY_CURRENT_VALUE,value.getCurrentValue());
@@ -516,6 +527,8 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
+    // region Adapter Classes -------------------------------------
+
     class AlphabetAdapter extends RecyclerView.Adapter<AlphabetAdapter.ValueHolder>{
 
         @ColorInt int defaultValueColor;
@@ -617,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
 
         public FavouriteAdapter(List<Favourite> data){
             this.data=data;
-           setHasStableIds(true);
+            setHasStableIds(true);
         }
 
         @NonNull
@@ -733,6 +746,15 @@ public class MainActivity extends AppCompatActivity {
                         inputName.requestFocus();
                     }
                 });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Toast.makeText(MainActivity.this,
+                                "Use drag handle icon to reorder list or swipe to delete",Toast.LENGTH_LONG)
+                                .show();
+                        return true;
+                    }
+                });
                 dragHandle.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -753,4 +775,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    //endregion Nested Classes Ending ------------------------------------
+
+
+
+
 }
